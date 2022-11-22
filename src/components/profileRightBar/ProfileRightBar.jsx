@@ -1,15 +1,24 @@
+import React, { useContext, useState, useEffect } from "react";
+
+//firebase component
 import { doc, onSnapshot } from "firebase/firestore";
-import React, { useContext, useState } from "react";
-import { useEffect } from "react";
+
+//packages
 import { Link } from "react-router-dom";
+
+//component
 import { AuthContext } from "../../context/AuthContext";
 import { db } from "../../firebase";
+
+//styles
 import "./profileRightBar.scss";
 
 const ProfileRightBar = () => {
+  ///states
   const [getUserInfo, setGetUserInfo] = useState({});
   const { currentUser } = useContext(AuthContext);
 
+  //get users info
   useEffect(() => {
     const getInfo = () => {
       const unSub = onSnapshot(doc(db, "users", currentUser.uid), (doc) => {
@@ -22,7 +31,6 @@ const ProfileRightBar = () => {
     currentUser.uid && getInfo();
   }, [currentUser.uid]);
 
-  console.log(getUserInfo);
 
   return (
     <div className="profileRightBar">

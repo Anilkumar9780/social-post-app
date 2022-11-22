@@ -1,4 +1,6 @@
 import React from "react";
+
+//styles
 import "./online.scss";
 
 const Online = ({ onlineuser }) => {

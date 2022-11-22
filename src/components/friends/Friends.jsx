@@ -1,5 +1,8 @@
 import React from "react";
+
+//style
 import "./friends.scss";
+
 const Friends = ({ user }) => {
   return (
     <div>

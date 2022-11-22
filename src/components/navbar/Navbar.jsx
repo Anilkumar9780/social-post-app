@@ -1,14 +1,22 @@
-import React from "react";
+import React, { useContext } from "react";
+
+//mui packages
 import SearchIcon from "@mui/icons-material/Search";
 import PersonIcon from "@mui/icons-material/Person";
 import ChatBubbleIcon from "@mui/icons-material/ChatBubble";
 import NotificationsIcon from "@mui/icons-material/Notifications";
+
+//package
 import { Link } from "react-router-dom";
+
+//style
 import "./navbar.scss";
-import { useContext } from "react";
-import { AuthContext } from "./../../context/AuthContext";
+
+//component
+import { AuthContext } from "../../context/AuthContext";
 
 const Navbar = () => {
+  //get user
   const { currentUser } = useContext(AuthContext);
   return (
     <div className="navbarContainer">

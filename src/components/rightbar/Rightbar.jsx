@@ -1,7 +1,11 @@
 import React from "react";
-import Rightbarhome from "../rightbarhome/Rightbarhome";
+
+//style
 import "./rightbar.scss";
-import ProfileRightBar from "./../profileRightBar/ProfileRightBar";
+
+//component
+import ProfileRightBar from "../profileRightBar/ProfileRightBar";
+import Rightbarhome from "../rightbarhome/Rightbarhome";
 
 const Rightbar = ({ profile }) => {
   return (

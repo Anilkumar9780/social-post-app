@@ -1,27 +1,33 @@
-import React, { useEffect, useState } from "react";
-import Stories from "./../stories/Stories";
-import Share from "./../share/Share";
-import "./usersPost.scss";
-import { doc, onSnapshot } from "firebase/firestore";
-import { db } from "../../firebase";
-import TimeAgo from "react-timeago";
+import React, { useEffect, useState, useContext } from "react";
 
-import { useContext } from "react";
+//component
+import Stories from "../stories/Stories";
+import Share from "../share/Share";
+import { db } from "../../firebase";
 import { AuthContext } from "../../context/AuthContext";
+
+//style
+import "./usersPost.scss";
+
+//packages
+import { doc, onSnapshot } from "firebase/firestore";
+import TimeAgo from "react-timeago";
 import { Link } from "react-router-dom";
 import { MoreVert } from "@mui/icons-material";
 import { IconButton } from "@mui/material";
 
 const UsersPost = () => {
+  // states
   const [usersPosts, setUsersPosts] = useState([]);
   const { currentUser } = useContext(AuthContext);
+
+  //get users posts
   useEffect(() => {
     const getUsersPost = () => {
       const unSub = onSnapshot(
         doc(db, "usersPosts", currentUser.uid),
         (doc) => {
           doc.exists() && setUsersPosts(doc.data().messages);
-          // console.log(doc.data().messages);
         }
       );
       return () => {
@@ -30,7 +36,7 @@ const UsersPost = () => {
     };
     currentUser.uid && getUsersPost();
   }, [currentUser.uid]);
-console.log(usersPosts)
+  console.log(usersPosts)
 
   return (
     <div className="feedUsersPost">
@@ -48,8 +54,7 @@ console.log(usersPosts)
                       <img src={m.photoURL} alt="" className="postProfileImg" />
                     </Link>
                     <span className="postUsername">
-                      {/* @{m.displayName.replace(/\s+/g, "").toLowerCase()} */}
-                      {m.displayName}
+                      @{m.displayName.replace(/\s+/g, "").toLowerCase()}
                     </span>
                     <span className="postDate">
                       <TimeAgo

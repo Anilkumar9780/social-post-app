@@ -1,26 +1,36 @@
-import { DriveFolderUploadOutlined } from "@mui/icons-material";
-import React from "react";
-import { useContext } from "react";
-import { useState } from "react";
+import React, { useContext, useState } from "react";
+
+//component
 import Navbar from "../../components/navbar/Navbar";
 import Sidebar from "../../components/sidebar/Sidebar";
 import { AuthContext } from "../../context/AuthContext";
+import { db, storage } from "../../firebase";
+import { Loaders } from '../../Loader/Loader';
+
+//packages
 import { v4 as uuid } from "uuid";
+import { useNavigate } from "react-router-dom";
+import { DriveFolderUploadOutlined } from "@mui/icons-material";
+import { toast } from 'react-toastify';
+
+//styles
 import "./editProfile.scss";
+
+//firebase component
 import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
 import { doc, serverTimestamp, setDoc } from "firebase/firestore";
-import { db, storage } from "../../firebase";
 import {
   EmailAuthProvider,
   reauthenticateWithCredential,
   updateEmail,
   updateProfile,
 } from "firebase/auth";
-import { useNavigate } from "react-router-dom";
+
 
 const EditProfile = () => {
+  //states
   const [img, setImg] = useState(null);
-  const [error, setError] = useState(false);
+  const [loading, setLoading] = useState(false);
   const [data, setData] = useState({
     name: "",
     newEmail: "",
@@ -33,20 +43,30 @@ const EditProfile = () => {
   const { currentUser } = useContext(AuthContext);
   const navigate = useNavigate();
 
+  /**
+   * onchange in text
+   * @param {object} e 
+   */
   const handleChange = (e) => {
     setData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   };
 
+  /**
+   * handle update user Deatils
+   * @param {object} e 
+   */
   const handleUpdate = async (e) => {
+    setLoading(true);
     e.preventDefault();
-
     if (img) {
       const storageRef = ref(storage, "usersImages/" + uuid());
       const uploadTask = uploadBytesResumable(storageRef, img);
 
       uploadTask.on(
         (error) => {
-          setError(true);
+          toast.error(error, "Something went wrong", {
+            position: toast.POSITION.TOP_RIGHT
+          })
         },
         () => {
           getDownloadURL(uploadTask.snapshot.ref).then(async (downloadURL) => {
@@ -113,6 +133,10 @@ const EditProfile = () => {
       );
     }
     navigate("/login");
+    setLoading(false);
+    toast.success("Saved Successfully", {
+      position: toast.POSITION.TOP_RIGHT
+    })
   };
   // console.log(data);
   return (
@@ -235,6 +259,7 @@ const EditProfile = () => {
                     Update Profile
                   </button>
                 </form>
+                <Loaders loader={loading} />
               </div>
             </div>
           </div>

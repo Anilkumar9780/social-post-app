@@ -1,16 +1,22 @@
 import React, { useContext, useEffect, useState } from "react";
+
+//style
 import "./post.scss";
+
+//package
 import { IconButton } from "@mui/material";
 import {
   ChatBubbleOutline,
   MoreVert,
-  Favorite,
+  // Favorite,
   ThumbUp,
   ThumbUpAltOutlined,
   ShareOutlined,
 } from "@mui/icons-material";
 import TimeAgo from "react-timeago";
 import { Link } from "react-router-dom";
+
+//firebase component
 import {
   addDoc,
   collection,
@@ -20,10 +26,13 @@ import {
   serverTimestamp,
   setDoc,
 } from "firebase/firestore";
+
+//component
 import { db } from "../../firebase";
 import { AuthContext } from "../../context/AuthContext";
 
 const Post = ({ post }) => {
+  //states
   const [likes, setLikes] = useState([]);
   const [liked, setLiked] = useState(false);
   const [input, setInput] = useState("");
@@ -32,6 +41,7 @@ const Post = ({ post }) => {
   const [commentBoxVisible, setCommentBoxVisible] = useState(false);
   const { currentUser } = useContext(AuthContext);
 
+  //get likes
   useEffect(() => {
     const unSub = onSnapshot(
       collection(db, "posts", post.id, "likes"),
@@ -42,10 +52,12 @@ const Post = ({ post }) => {
     };
   }, [post.id]);
 
+  //set likes 
   useEffect(() => {
     setLiked(likes.findIndex((like) => like.id === currentUser?.uid) !== -1);
   }, [likes, currentUser.uid]);
 
+  //get user comments
   useEffect(() => {
     const unSub = onSnapshot(
       collection(db, "posts", post.id, "comments"),
@@ -63,6 +75,10 @@ const Post = ({ post }) => {
     };
   }, [post.id]);
 
+  /**
+   * handle submit comment
+   * @param {object} e 
+   */
   const handleComment = async (e) => {
     e.preventDefault();
 
@@ -86,8 +102,8 @@ const Post = ({ post }) => {
       });
     }
   };
-  console.log(currentUser)
-  // console.log(comments);
+
+
   return (
     <div className="post">
       <div className="postWrapper">

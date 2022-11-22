@@ -1,24 +1,44 @@
 import React, { useState } from "react";
+
+//firebase component
 import { signInWithEmailAndPassword } from "firebase/auth";
+
+//package
 import { Link, useNavigate } from "react-router-dom";
+import { toast } from 'react-toastify';
+
+//style scss
 import "./login.scss";
+
+//component
 import { auth } from "../../firebase";
+import { Loaders } from '../../Loader/Loader';
 
 const Login = () => {
-  const [error, setError] = useState(false);
+  //states
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
+  /**
+   * handle login User
+   * @param {object} e 
+   */
   const handleLogin = async (e) => {
+    setLoading(true);
     e.preventDefault();
-
     const email = e.target[0].value;
     const password = e.target[1].value;
-
     try {
       await signInWithEmailAndPassword(auth, email, password);
       navigate("/");
+      toast.success("Login Successfully", {
+        position: toast.POSITION.TOP_RIGHT
+      })
     } catch (error) {
-      setError(true);
+      toast.error(error, "Something went wrong", {
+        position: toast.POSITION.TOP_RIGHT
+      })
+      setLoading(false);
     }
   };
 
@@ -59,7 +79,8 @@ const Login = () => {
                     Create a New Account
                   </button>
                 </Link>
-                {error && <span>Something went wrong</span>}
+                {/* loaders */}
+                <Loaders loader={loading} />
               </form>
             </div>
           </div>

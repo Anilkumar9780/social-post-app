@@ -1,6 +1,10 @@
 import React from "react";
+
+//component
 import Online from "../online/Online";
 import { Usersonline } from "../../data";
+
+//styles
 import "./rightbarhome.scss";
 
 const Rightbarhome = () => {

@@ -1,8 +1,13 @@
 import React, { useContext } from "react";
+
+//style
 import "./menuLink.scss";
-import { AuthContext } from "./../../context/AuthContext";
+
+//component
+import { AuthContext } from "../../context/AuthContext";
 
 const MenuLink = ({ Icon, text }) => {
+  //get uers detail
   const { currentUser } = useContext(AuthContext);
   return (
     <div className="menuLink">

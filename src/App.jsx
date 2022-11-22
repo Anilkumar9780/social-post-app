@@ -1,19 +1,23 @@
-import ReactDOM from "react-dom/client";
+import { useContext } from "react";
+
+//package
 import {
   createBrowserRouter,
   RouterProvider,
-  Route,
   Navigate,
 } from "react-router-dom";
+
+//component
 import Home from "./pages/home/Home";
 import Login from "./pages/login/Login";
 import Register from "./pages/register/Register";
 import EditProfile from "./pages/editProfile/EditProfile";
 import Profile from "./pages/profile/Profile";
-import "./style/dark.scss";
-import { useContext } from "react";
 import { DarkModeContext } from "./context/darkModeContext";
 import { AuthContext } from "./context/AuthContext";
+
+//style
+import "./style/dark.scss";
 
 function App() {
   const { darkMode } = useContext(DarkModeContext);

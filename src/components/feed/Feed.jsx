@@ -1,15 +1,22 @@
-import { collection, onSnapshot } from "firebase/firestore";
 import React, { useState, useEffect } from "react";
+
+//firebase component
+import { collection, onSnapshot } from "firebase/firestore";
+
+//component
 import { db } from "../../firebase";
-// import { Posts } from "../../data";
 import Post from "../post/Post";
 import Share from "../share/Share";
 import Stories from "../stories/Stories";
+
+//styles
 import "./feed.scss";
 
 const Feed = () => {
+  //states
   const [posts, setPosts] = useState([]);
 
+  //get the post
   useEffect(() => {
     const unSub = onSnapshot(collection(db, "posts"), (snapshot) => {
       setPosts(snapshot.docs.map((doc) => ({ id: doc.id, data: doc.data() })));

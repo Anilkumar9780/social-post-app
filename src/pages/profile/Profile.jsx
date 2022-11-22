@@ -1,12 +1,17 @@
 import React, { useContext } from "react";
+
+//component
 import Navbar from "../../components/navbar/Navbar";
 import Sidebar from "../../components/sidebar/Sidebar";
-import "./profile.scss";
-import Rightbar from "./../../components/rightbar/Rightbar";
+import Rightbar from "../../components/rightbar/Rightbar";
 import { AuthContext } from "../../context/AuthContext";
 import UsersPost from "../../components/usersPost/UsersPost";
 
+//style
+import "./profile.scss";
+
 const Profile = () => {
+  //get user details
   const { currentUser } = useContext(AuthContext);
   return (
     <div className="profile">

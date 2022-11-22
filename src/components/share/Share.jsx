@@ -1,15 +1,18 @@
+import React, { useContext, useState } from "react";
+
+// packages
 import {
   Close,
   EmojiEmotions,
   PermMedia,
   VideoCameraFront,
 } from "@mui/icons-material";
-import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
-import { db, storage } from "../../firebase";
+import Picker from "@emoji-mart/react";
 import { v4 as uuid } from "uuid";
-import React, { useContext, useState } from "react";
-import "./share.scss";
-import { AuthContext } from "./../../context/AuthContext";
+import { toast } from 'react-toastify';
+
+//firebase component
+import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 import {
   addDoc,
   arrayUnion,
@@ -19,16 +22,24 @@ import {
   updateDoc,
   doc,
 } from "firebase/firestore";
-import Picker from "@emoji-mart/react";
+
+//component
+import { db, storage } from "../../firebase";
+import { AuthContext } from "../../context/AuthContext";
+
+// style
+import "./share.scss";
 
 const Share = () => {
-  const [error, setError] = useState(false);
+  //states
   const { currentUser } = useContext(AuthContext);
   const [input, setInput] = useState("");
   const [showEmojis, setShowEmojis] = useState(false);
-  console.log(error)
   const [img, setImg] = useState(null);
 
+  /**
+   * handle add post
+   */
   const handlePost = async () => {
     if (img) {
       const storageRef = ref(storage, "Posts/" + uuid());
@@ -37,7 +48,9 @@ const Share = () => {
 
       uploadTask.on(
         (error) => {
-          setError(true);
+          toast.error(error, "Something went wrong", {
+            position: toast.POSITION.TOP_RIGHT
+          })
         },
         () => {
           getDownloadURL(uploadTask.snapshot.ref).then(async (downloadURL) => {
@@ -90,10 +103,19 @@ const Share = () => {
     setImg(null);
     setShowEmojis(false);
   };
+
+  /**
+   * handle key
+   * @param {object} e 
+   */
   const handleKey = (e) => {
     e.code === "Enter" && handlePost();
   };
 
+  /**
+   * add Emoji
+   * @param {object} e 
+   */
   const addEmoji = (e) => {
     let sym = e.unified.split("-");
     let codesArray = [];
@@ -102,10 +124,13 @@ const Share = () => {
     setInput(input + emoji);
   };
 
+  /**
+   * remove Image
+   */
   const removeImage = () => {
     setImg(null);
   };
-  // console.log(currentUser);
+
   return (
     <div className="share">
       <div className="shareWrapper">

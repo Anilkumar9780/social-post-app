@@ -1,32 +1,49 @@
 import React, { useState } from "react";
+
+//firebase components
 import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
 import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 import { doc, setDoc } from "firebase/firestore";
-import "./register.scss";
-import { DriveFolderUploadOutlined } from "@mui/icons-material";
-import { Link, useNavigate } from "react-router-dom";
 import { auth, db, storage } from "../../firebase";
 
+//styel scss
+import "./register.scss";
+
+//mui packages
+import { DriveFolderUploadOutlined } from "@mui/icons-material";
+
+//package
+import { Link, useNavigate } from "react-router-dom";
+import { toast } from 'react-toastify';
+
+//component
+import { Loaders } from '../../Loader/Loader'
+
 const Register = () => {
+  //states
   const [img, setImg] = useState(null);
-  const [error, setError] = useState(false);
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
+  /**
+   * handle Register User
+   * @param {object} e 
+   */
   const handleRegister = async (e) => {
+    setLoading(true);
     e.preventDefault();
     const displayName = e.target[0].value;
     const email = e.target[1].value;
     const password = e.target[2].value;
     try {
       const res = await createUserWithEmailAndPassword(auth, email, password);
-
       const storageRef = ref(storage, "usersImages/" + displayName);
-
       const uploadTask = uploadBytesResumable(storageRef, img);
-
       uploadTask.on(
         (error) => {
-          setError(true);
+          toast.error(error, "Something went wrong", {
+            position: toast.POSITION.TOP_RIGHT
+          })
         },
         () => {
           getDownloadURL(uploadTask.snapshot.ref).then(async (downloadURL) => {
@@ -34,24 +51,28 @@ const Register = () => {
               displayName,
               photoURL: downloadURL,
             });
-
             await setDoc(doc(db, "users", res.user.uid), {
               uid: res.user.uid,
               displayName,
               email,
               photoURL: downloadURL,
             });
-
             await setDoc(doc(db, "usersPosts", res.user.uid), { messages: [] });
-            // console.log(res.user);
           });
         }
       );
     } catch (error) {
-      setError(true);
+      toast.error(error, "Something went wrong", {
+        position: toast.POSITION.TOP_RIGHT
+      })
     }
-    navigate("/login");
+    navigate("/login")
+    toast.success("Register Successfully", {
+      position: toast.POSITION.TOP_RIGHT
+    });
+    setLoading(false);
   };
+
   return (
     <div className="register">
       <div className="registerWrapper">
@@ -111,13 +132,6 @@ const Register = () => {
                   minLength={6}
                   required
                 />
-                {/* <input
-                  type="password"
-                  placeholder="Confirm Password"
-                  id="confirmPasword"
-                  className="registerInput"
-                  required
-                /> */}
                 <button type="submit" className="registerButton">
                   Sign Up
                 </button>
@@ -126,8 +140,9 @@ const Register = () => {
                     Log into Account
                   </button>
                 </Link>
-                {error && <span>Something went wrong</span>}
               </form>
+              {/* loaders */}
+              <Loaders loader={loading} />
             </div>
           </div>
         </div>

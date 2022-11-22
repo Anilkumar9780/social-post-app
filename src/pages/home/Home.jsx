@@ -1,8 +1,13 @@
 import React from "react";
-import Feed from "../../components/feed/Feed";
+
+//component
+import Feed from '../../components/feed/Feed'
 import Navbar from "../../components/navbar/Navbar";
 import Rightbar from "../../components/rightbar/Rightbar";
 import Sidebar from "../../components/sidebar/Sidebar";
+import { PopMessage } from "../../Popupmessage/PopMessage";
+
+//style
 import "./home.scss";
 
 const Home = () => {
@@ -13,6 +18,7 @@ const Home = () => {
         <Sidebar />
         <Feed />
         <Rightbar />
+        <PopMessage />
       </div>
     </div>
   );
