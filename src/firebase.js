@@ -5,12 +5,13 @@ import { getFirestore } from "firebase/firestore";
 
 
 const firebaseConfig = {
-  apiKey: "AIzaSyB4Y_5e5FOPxNF6FjlrJCtUh4WmyTttmi8",
-  authDomain: "social-media-app-c9b69.firebaseapp.com",
-  projectId: "social-media-app-c9b69",
-  storageBucket: "social-media-app-c9b69.appspot.com",
-  messagingSenderId: "968502154569",
-  appId: "1:968502154569:web:9cabaaf6d22125aee23698"
+  apiKey: "AIzaSyCpD4Hy7D7xOtLPWokq9v8tGcrgxYCR4MQ",
+  authDomain: "social-media-app-539d2.firebaseapp.com",
+  databaseURL: "https://social-media-app-539d2-default-rtdb.firebaseio.com",
+  projectId: "social-media-app-539d2",
+  storageBucket: "social-media-app-539d2.appspot.com",
+  messagingSenderId: "576376354303",
+  appId: "1:576376354303:web:4693500a990563af1d63ca"
 };
 
 // Initialize Firebase
